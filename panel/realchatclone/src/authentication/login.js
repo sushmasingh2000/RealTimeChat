@@ -77,7 +77,8 @@ const Login = () => {
           />
         </div>
         <button
-          onClick={() => fk.handleSubmit()}
+          // onClick={() => fk.handleSubmit()}
+          onClick={() => navigate('/dashboard')}
           className="w-full py-3 bg-[#25D366] text-white font-semibold rounded-lg 
             hover:bg-[#128C7E] focus:outline-none focus:ring-2 focus:ring-[#128C7E] 
             transition duration-300 ease-in-out transform hover:scale-105"
