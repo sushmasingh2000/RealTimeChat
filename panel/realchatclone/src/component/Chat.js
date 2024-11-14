@@ -1,24 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
+import React, { useState } from "react";
 import { FaArrowRight, FaMicrophone } from 'react-icons/fa';
 
 function Chat({ selectedUser }) {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState();
   const [messages, setMessages] = useState([]);
-  const [timestamp, setTimestamp] = useState(null);
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [isActive, setActive] = useState(false);
-
-  useEffect(() => {
-    if (selectedUser) {
-      setActive(selectedUser.isActive);
-      const currentTime = new Date().toLocaleTimeString([], {
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-      setTimestamp(selectedUser.isActive ? "Active Now" : `Last seen at ${currentTime}`);
-    }
-  }, [selectedUser]);
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -35,7 +22,7 @@ function Chat({ selectedUser }) {
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prev) => !prev);
   };
- 
+
   return (
     <div className="h-full flex flex-col bg-[#E5DDD5]">
       {selectedUser && (
@@ -48,10 +35,11 @@ function Chat({ selectedUser }) {
           <div className="ml-2">
             <p className="font-semibold">{selectedUser?.name}</p>
             <div className="flex items-center space-x-1">
+
               <span
-                className={`w-2.5 h-2.5 rounded-full ${isActive ? "bg-green-500" : "bg-gray-500"}`}
+                className="w-2.5 h-2.5 rounded-full bg-green-500"
               />
-              <p className="text-xs">{timestamp}</p>
+              <p className="text-xs">Active Now</p>
             </div>
           </div>
         </div>
@@ -64,13 +52,13 @@ function Chat({ selectedUser }) {
             className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[80%] p-2 my-2 rounded-lg ${msg.sender === "me"
+              className={`max-w-[80%] !text-xs px-2 my-2 pt-1 rounded-lg ${msg.sender === "me"
                 ? "bg-[#25D366] text-white"
                 : "bg-[#f1f1f1] text-black"
                 }`}
             >
               {msg.text}
-              <div className="text-xs text-gray-500 mt-1 text-right">
+              <div className="text-[7px] text-gray-500  text-right">
                 {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
               </div>
             </div>

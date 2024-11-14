@@ -13,7 +13,7 @@ function Home() {
         </div>
         <UserList setSelectedUser={setSelectedUser} />
       </div>
-      <div className="w-[70%] bg-[#E5DDD5]  flex flex-col">
+      <div className="w-[70%] bg-[#E5DDD5] flex flex-col">
         {selectedUser ? (
           <Chat selectedUser={selectedUser} />
         ) : (
