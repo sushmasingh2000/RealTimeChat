@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { endpoint } from "../utils/APIRoutes";
 import toast from 'react-hot-toast';
+import { endpoint } from "../utils/APIRoutes";
 
 const Registration = () => {
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ const Registration = () => {
         username: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirm_password: ""
     }
     const fk = useFormik({
         initialValues: initialValue,
@@ -21,7 +21,7 @@ const Registration = () => {
                 username: fk.values.username,
                 email: fk.values.email,
                 password: fk.values.password,
-                confirmPassword: fk.values.confirmPassword,
+                confirm_password: fk.values.confirm_password,
             }
             RegistrationFn(reqbody)
             // console.log(reqbody)
@@ -35,8 +35,10 @@ const Registration = () => {
                     "Access-Control-Allow-Origin": "*",
                 },
             })
-            if (response?.data?.msg === "Registration Successfully") {
-                toast(response?.data?.msg)
+            toast(response?.data?.msg)
+            if (response?.data?.msg === "Registered successfully") {
+               fk.handleReset()
+               navigate('/')
             }
         }
         catch (e) {
@@ -89,13 +91,13 @@ const Registration = () => {
                         />
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                        <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">
                             Confirm Password
                         </label>
                         <input
                             type="password"
-                            id="confirmPassword"
-                            value={fk.values.confirmPassword}
+                            id="confirm_password"
+                            value={fk.values.confirm_password}
                             onChange={fk.handleChange}
                             className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#25D366]"
                             required

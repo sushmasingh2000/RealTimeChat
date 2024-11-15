@@ -6,9 +6,7 @@ import { endpoint } from "../utils/APIRoutes";
 
 const Login = () => {
   const navigate = useNavigate();
-
-
-  const initialValue = {
+ const initialValue = {
     email: "",
     password: ""
   }
@@ -21,7 +19,7 @@ const Login = () => {
         email: fk.values.email,
         password: fk.values.password
       }
-      console.log(reqbody)
+      LoginFn(reqbody)
     }
   })
   const LoginFn = async (reqbody) => {
@@ -77,8 +75,8 @@ const Login = () => {
           />
         </div>
         <button
-          // onClick={() => fk.handleSubmit()}
-          onClick={() => navigate('/dashboard')}
+          onClick={() => fk.handleSubmit()}
+          // onClick={() => navigate('/dashboard')}
           className="w-full py-3 bg-[#25D366] text-white font-semibold rounded-lg 
             hover:bg-[#128C7E] focus:outline-none focus:ring-2 focus:ring-[#128C7E] 
             transition duration-300 ease-in-out transform hover:scale-105"

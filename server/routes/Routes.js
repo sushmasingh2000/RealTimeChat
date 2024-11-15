@@ -1,5 +1,5 @@
 const express = require("express");
-const { Registration, Login, Bonus, Refferral } = require("../controller");
+const { Registration, Login, Bonus} = require("../controller");
 const router = express.Router();
 
 router.post("/api/user_registration",Registration);

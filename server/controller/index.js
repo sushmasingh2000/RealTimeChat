@@ -1,14 +1,32 @@
 const { failMsg } = require("../helper/helperResponse");
 const { queryDb } = require("../helper/adminHelper");
 
+exports.Registration = async (req, res) => {
+    const { username, email, password,  confirm_password } = req.body;
+    if (!username || !email || !password || !confirm_password) {
+        return res.status(400).json({ msg: 'All field is required' });
+    }
+    try {
+        const checkQuery = 'SELECT * FROM Registration WHERE email = ? ';
+        const duplicateUser = await queryDb(checkQuery, [email]);
+        if (duplicateUser.length > 0) {
+            return res.status(400).json({ msg: 'Email already registered.' });
+        }
+
+        const insertQuery = 'INSERT INTO Registration (username, email, password ,confirm_password ) VALUES (?, ?, ?, ?)';
+        const result = await queryDb(insertQuery, [username, email, password, confirm_password]);
+        const userId = result.insertId;
+
+        return res.status(201).json({ msg: "Registered successfully", userId: userId, data: result });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ msg: "Something went wrong in the API call." });
+    }
+};
+
+
 // exports.Registration = async (req, res) => {
-//     const { username, email, mobile_no, confirm_password, set_password,Referral } = req.body;
-//     if (!username || !email || !mobile_no || !set_password || !confirm_password || !Referral) {
-//         return res.status(400).json({ msg: 'All fields are required.' });
-//     }
-//     if (set_password !== confirm_password) {
-//         return res.status(400).json({ msg: 'Passwords do not match.' });
-//     }
+//     const { username, email, mobile_no, confirm_password, set_password, Referral } = req.body;
 //     try {
 //         const checkQuery = 'SELECT * FROM Registration WHERE email = ? OR mobile_no = ?';
 //         const duplicateUser = await queryDb(checkQuery, [email, mobile_no]);
@@ -16,43 +34,17 @@ const { queryDb } = require("../helper/adminHelper");
 //             return res.status(400).json({ msg: 'Email or mobile number already registered.' });
 //         }
 //         const insertQuery = 'INSERT INTO Registration (username, email, mobile_no, set_password ,confirm_password ,Referral) VALUES (?, ?, ?, ? ,? ,?)';
-//         const result = await queryDb(insertQuery, [username, email, mobile_no, set_password, confirm_password ,Referral]);
+//         const result = await queryDb(insertQuery, [username, email, mobile_no, set_password, confirm_password, Referral]);
 //         const userId = result.insertId;
+//         //bonus income query
 //         const bonusInsertQuery = 'INSERT INTO bonus (user_id, amount, Description) VALUES (?, ?, ?)';
 //         await queryDb(bonusInsertQuery, [userId, 10, `Registration bonus for user ID ${userId}`]);
-//         return res.status(201).json({
-//             msg: "Registered successfully",
-//             userId: userId,
-//             data: result,
-//         });
+//         return res.status(201).json({ msg: "Registered successfully", userId: userId, data: result });
 //     } catch (e) {
 //         console.error(e);
-//         return res.status(500).json({
-//             msg: "Something went wrong in the API call.",
-//         });
+//         return res.status(500).json({ msg: "Something went wrong in the API call." });
 //     }
 // };
-
-exports.Registration = async (req, res) => {
-    const { username, email, mobile_no, confirm_password, set_password, Referral } = req.body;
-    try {
-        const checkQuery = 'SELECT * FROM Registration WHERE email = ? OR mobile_no = ?';
-        const duplicateUser = await queryDb(checkQuery, [email, mobile_no]);
-        if (duplicateUser.length > 0) {
-            return res.status(400).json({ msg: 'Email or mobile number already registered.' });
-        }
-        const insertQuery = 'INSERT INTO Registration (username, email, mobile_no, set_password ,confirm_password ,Referral) VALUES (?, ?, ?, ? ,? ,?)';
-        const result = await queryDb(insertQuery, [username, email, mobile_no, set_password, confirm_password, Referral]);
-        const userId = result.insertId;
-        //bonus income query
-        const bonusInsertQuery = 'INSERT INTO bonus (user_id, amount, Description) VALUES (?, ?, ?)';
-        await queryDb(bonusInsertQuery, [userId, 10, `Registration bonus for user ID ${userId}`]);
-        return res.status(201).json({ msg: "Registered successfully", userId: userId, data: result });
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ msg: "Something went wrong in the API call." });
-    }
-};
 
 exports.Bonus = async (req, res) => {
     const userId = req.params.userId;
