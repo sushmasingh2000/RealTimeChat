@@ -1,32 +1,23 @@
-const express = require("express")
-const mongoose = require("mongoose")
-const cors = require("cors")
-const bcrypt = require("bcrypt")
+const express = require("express");
+const bodyParser = require("body-parser");
+require("dotenv").config({ path: __dirname + "/.env" });
 
-const app = express()
-require("dotenv").config()
+const app = express();
+const cors = require("cors");
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
-app.use(cors())
-app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.MONGO_URL ,{
-    useNewUrlParser: true,  // Fixed typo here
-    useUnifiedTopology: true
-}).then(()=>{
-    console.log("DB Connection SuccessFully")
-})
+app.use(bodyParser.json());
 
+const allRoutes = require("./routes/Routes");
+app.use("", allRoutes);
 
-// mongoose.connect(process.env.MONGO_URL)
-//   .then(() => {
-//     console.log("DB Connection Successfully");
-//   })
-//   .catch((error) => {
-//     console.error("DB Connection Error:", error);
-//     process.exit(1);
-//   });
-
-const server = app.listen(process.env.PORT ,()=>{
-    console.log(`Server start on this port ${process.env.PORT}`)
-})
-
+app.listen(process.env.PORT, () => {
+  console.log("Server is running on port truecoine.", process.env.PORT);
+});

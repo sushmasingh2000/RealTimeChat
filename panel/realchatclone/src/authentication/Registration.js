@@ -23,8 +23,8 @@ const Registration = () => {
                 password: fk.values.password,
                 confirmPassword: fk.values.confirmPassword,
             }
-            // RegistrationFn(reqbody)
-            console.log(reqbody)
+            RegistrationFn(reqbody)
+            // console.log(reqbody)
         }
     })
     const RegistrationFn = async (reqbody) => {

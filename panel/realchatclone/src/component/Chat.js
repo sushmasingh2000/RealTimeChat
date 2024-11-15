@@ -24,7 +24,7 @@ function Chat({ selectedUser }) {
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#E5DDD5]">
+    <div className="h-full  flex flex-col bg-[#E5DDD5]">
       {selectedUser && (
         <div className="flex items-center p-4 bg-[#075e54] text-white">
           <img
